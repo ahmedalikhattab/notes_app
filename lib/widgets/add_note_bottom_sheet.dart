@@ -70,3 +70,12 @@ class _AddNoteformState extends State<AddNoteform> {
     );
   }
 }
+
+/*if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                  } else {
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {
+                      
+                    });
+                  }*/
