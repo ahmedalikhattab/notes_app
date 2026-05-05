@@ -17,6 +17,7 @@ class _AddNoteformState extends State<AddNoteform> {
 
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   String? title, subTitle;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,22 +44,28 @@ class _AddNoteformState extends State<AddNoteform> {
                 maxLines: 5,
               ),
               const SizedBox(height: 32),
-              Custombutton(
-                onTap: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    var notemodel = NoteModel(
-                      title: title!,
-                      subTitle: subTitle!,
-                      date: DateTime.now().toString(),
-                      color: Colors.blue.toARGB32()
-,
-                    );
-                    BlocProvider.of<AddNoteCubit>(context).AddNote(notemodel);
-                  } else {
-                    autovalidateMode = AutovalidateMode.always;
-                    setState(() {});
-                  }
+              BlocBuilder<AddNoteCubit, AddNoteState>(
+                builder: (context, state) {
+                  return Custombutton(
+                    isLoading: state is AddNoteLoading ? true : false,
+                    onTap: () {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save();
+                        var notemodel = NoteModel(
+                          title: title!,
+                          subTitle: subTitle!,
+                          date: DateTime.now().toString(),
+                          color: Colors.blue.toARGB32(),
+                        );
+                        BlocProvider.of<AddNoteCubit>(
+                          context,
+                        ).AddNote(notemodel);
+                      } else {
+                        autovalidateMode = AutovalidateMode.always;
+                        setState(() {});
+                      }
+                    },
+                  );
                 },
               ),
               const SizedBox(height: 16),
